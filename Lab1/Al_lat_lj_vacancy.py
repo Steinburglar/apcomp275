@@ -6,6 +6,8 @@ import numpy, os
 import matplotlib.pyplot as plt
 import argparse
 
+true_alat = 4.05
+
 input_template = """
 # ---------- 1. Initialize simulation ---------------------
 units metal
@@ -34,7 +36,7 @@ print "Lattice constant (Angstoms) = ${length}"
 """
 
 
-def make_struc(alat, super = False):
+def make_struc(alat, size = 1):
     """
     Creates the crystal structure using ASE.
     :param alat: Lattice parameter in angstrom
@@ -43,32 +45,32 @@ def make_struc(alat, super = False):
     unitcell = crystal(
         "Al", [(0, 0, 0)], spacegroup=225, cellpar=[alat, alat, alat, 90, 90, 90]
     )
-    if super:
-        multiplier = numpy.identity(3) * 2
-        ase_supercell = make_supercell(unitcell, multiplier)
-        structure = Struc(ase2struc(ase_supercell))
-    else:
-        structure = Struc(ase2struc(unitcell))
+    multiplier = numpy.identity(3) * size
+    ase_supercell = make_supercell(unitcell, multiplier)
+    structure = Struc(ase2struc(ase_supercell))
     return structure
 
 
-def compute_energy(alat, template, super = False, relax = False):
+def compute_vacancy_energy(alat, template, size = 1, super = False, relax = False, ):
+    Eperf = compute_energy(alat, template, size=size, super=super, relax=relax, structure = "perfect")[0]
+    Evac = compute_energy(alat, template, size=size, super=super, relax=relax, structure = "vacancy")[0]
+    n = size**3 * 4  #number of atoms in supercell
+
+
+def compute_energy(alat, template, size = 1, relax = False, structure= "perfect"):
     """
     Make an input template and select potential and structure, and the path where to run
     """
-    if super:
-        run_dir = "Lab1/LJsuper"
-    else:
-        run_dir = "Lab1/LJ"
+    run_dir = "Lab1/vacancy/" +structure
     if relax:
         run_dir += "/relax"
     else:
-        run_dir += "/scan"
+        run_dir += "/still"
 
     potpath = os.path.join(os.environ["LAMMPS_POTENTIALS"], "Al_zhou.eam.alloy")  #path to desired potential function
     potential = ClassicalPotential(path=potpath, ptype="eam", element=["Al"])   #define potential object
-    runpath = Dir(path=os.path.join(os.environ["WORKDIR"], run_dir, str(alat)))  #pass a directory object to variable runpath
-    struc = make_struc(alat=alat)   #builds structure object based on lattice parameter
+    runpath = Dir(path=os.path.join(os.environ["WORKDIR"], run_dir, str(size)))  #pass a directory object to variable runpath
+    struc = make_struc(alat=alat, size = size)   #builds structure object based on lattice parameter
     output_file = lammps_run(
         struc=struc,
         runpath=runpath,
@@ -80,27 +82,17 @@ def compute_energy(alat, template, super = False, relax = False):
     return energy, lattice
 
 
-def lattice_scan():
-    alat_list = numpy.linspace(3.9, 4.3, 6)
+def lattice_scan_supersize(relax=False):
+    size_list = numpy.arange(1, 5)
     energy_list = [
-        compute_energy(alat=a, template=input_template, super = args.super, relax = False)[0] for a in alat_list
+        compute_vacancy_energy(alat=true_alat, template=input_template, size=s, super=True, relax=relax)[0] for s in size_list
     ]
-    plt.plot(alat_list, energy_list)
-    title = 'Lattice Scan Result, LJ'
-    if args.super:
-        title += ', Supercell'
+    plt.plot(size_list, energy_list)
+    title = 'Supercell size Vacancy Scan Result, LJ'
     plt.title(title)
     plt.show()
 
-def lattice_relax():
-    a = 4.1
-    energy = compute_energy(alat=a, template=input_template, super = args.super, relax = True)[0]
-    plt.plot(a, energy, 'o')
-    title = 'Lattice Relaxation Result, LJ'
-    if args.super:
-        title += ', Supercell'
-    plt.title(title)
-    plt.show()
+
 
 if __name__ == "__main__":
     # put here the function that you actually want to run
