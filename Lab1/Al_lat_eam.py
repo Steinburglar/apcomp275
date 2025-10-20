@@ -75,7 +75,7 @@ def compute_energy(alat, template, super = False, relax = False):
     potpath = os.path.join(os.environ["LAMMPS_POTENTIALS"], "Al_zhou.eam.alloy")  #path to desired potential function
     potential = ClassicalPotential(path=potpath, ptype="eam", element=["Al"])   #define potential object
     runpath = Dir(path=os.path.join(os.environ["WORKDIR"], run_dir, str(alat)))  #pass a directory object to variable runpath
-    struc = make_struc(alat=alat, super=True)   #builds structure object based on lattice parameter
+    struc = make_struc(alat=alat, super=super)   #builds structure object based on lattice parameter
     output_file = lammps_run(
         struc=struc,
         runpath=runpath,
@@ -92,6 +92,9 @@ def lattice_scan():
     energy_list = [
         compute_energy(alat=a, template=input_template, super = args.super, relax = False)[0] for a in alat_list
     ]
+    size = 32 if args.super else 4
+    cohesive_energy = [e/size for e in energy_list]  #energy per atom
+    print(f'Lattice constants: {alat_list} A, \n Cohesive energies: {cohesive_energy} eV')
     plt.plot(alat_list, energy_list)
     title = 'Lattice Scan Result, EAM'
     if args.super:
@@ -101,7 +104,10 @@ def lattice_scan():
 
 def lattice_relax():
     a = 4.1
+    size = 32 if args.super else 4
     energy = compute_energy(alat=a, template=input_template, super = args.super, relax = True)[0]
+    cohesive_energy = energy/size
+    print(f'Relaxed lattice constant: {a} A, Energy per atom: {cohesive_energy} eV')
     plt.plot(a, energy, 'o')
     title = 'Lattice Relaxation Result, EAM'
     if args.super:
@@ -117,7 +123,7 @@ if __name__ == "__main__":
     parser.add_argument('--relax', action='store_true', help='Perform lattice relaxation instead of scanning')
     parser.add_argument('--super', action='store_true', help='Use supercell')
     args = parser.parse_args()
-
+    print(input_template)
     if args.relax:
         lattice_relax()
     else:

@@ -1,0 +1,102 @@
+LAMMPS (22 Jul 2025 - Update 1)
+Reading data file ...
+  orthogonal box = (0 0 0) to (12.367569 8.7451919 4.915064)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  27 atoms
+  read_data CPU = 0.001 seconds
+WARNING: No fixes with time integration, atoms won't move
+For more information see https://docs.lammps.org/err0028 (../verlet.cpp:60)
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6.5
+  ghost atom cutoff = 6.5
+  binsize = 3.25, bins = 4 3 2
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 3.051 | 3.051 | 3.051 Mbytes
+   Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
+         0  -46.55429       12.367569      8.7451919      4.915064       4867.5401     -14597.817      21899.137      7301.3002    
+Loop time of 1.712e-06 on 1 procs for 0 steps with 27 atoms
+
+0.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.712e-06  |            |       |100.00
+
+Nlocal:             27 ave          27 max          27 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            118 ave         118 max         118 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:            360 ave         360 max         360 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 360
+Ave neighs/atom = 13.333333
+Neighbor list builds = 0
+Dangerous builds = 0
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Setting up cg style minimization ...
+  Unit style    : metal
+  Current step  : 0
+WARNING: Energy due to 3 extra global DOFs will be included in minimizer energies
+ (../min.cpp:222)
+Per MPI rank memory allocation (min/avg/max) = 4.176 | 4.176 | 4.176 Mbytes
+   Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
+         0  -46.55429       12.367569      8.7451919      4.915064       4867.5401     -14597.817      21899.137      7301.3002    
+         9  -46.561266      12.366925      8.7447364      4.915064      -0.13410872    -19764.993      19765.63      -1.0385507    
+Loop time of 0.000214485 on 1 procs for 9 steps with 27 atoms
+
+0.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -46.5542898230038   -46.561265817585  -46.5612658190747
+  Force two-norm initial, final = 1.7572322 0.00047513208
+  Force max component initial, final = 1.2112782 0.00013499428
+  Final line search alpha, max atom move = 0.99007187 0.00013365404
+  Iterations, force evaluations = 9 16
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00010142 | 0.00010142 | 0.00010142 |   0.0 | 47.28
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 1.3538e-05 | 1.3538e-05 | 1.3538e-05 |   0.0 |  6.31
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.953e-05  |            |       | 46.40
+
+Nlocal:             27 ave          27 max          27 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            118 ave         118 max         118 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:            360 ave         360 max         360 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 360
+Ave neighs/atom = 13.333333
+Neighbor list builds = 0
+Dangerous builds = 0
+Total energy (eV) = -46.5612658190747
+Number of atoms = 27
+Lattice constant (Angstoms) = 12.3669248465173
+Total wall time: 0:00:00

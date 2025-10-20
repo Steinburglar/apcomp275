@@ -1,0 +1,1 @@
+Relaxed lattice constant: 4.08165490486347 A, Energy per atom: -3.579998659929 eV

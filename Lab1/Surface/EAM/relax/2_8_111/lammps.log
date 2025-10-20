@@ -1,0 +1,124 @@
+LAMMPS (22 Jul 2025 - Update 1)
+# ---------- 1. Initialize simulation ---------------------
+units metal
+atom_style atomic
+dimension  3
+boundary   p p f
+read_data /home/bond/Work/Lab1/Surface/EAM/relax/2_8_111/lammps.data
+Reading data file ...
+  orthogonal box = (0 0 0) to (8.6584976 7.4984789 18.356545)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  18 atoms
+  read_data CPU = 0.001 seconds
+
+# ---------- 2. Specify interatomic potential ---------------------
+pair_style eam/alloy
+pair_coeff * * /home/bond/Software/LAMMPS/lammps-22Jul2025/potentials/Al_zhou.eam.alloy  Al
+Reading eam/alloy potential file /home/bond/Software/LAMMPS/lammps-22Jul2025/potentials/Al_zhou.eam.alloy with DATE: 2007-10-12
+
+# pair_style lj/cut 4.5
+# pair_coeff 1 1 0.392 2.620 4.5
+
+# ---------- 3. Run single point calculation  ---------------------
+thermo_style custom step pe lx ly lz press pxx pyy pzz
+run 0
+WARNING: No fixes with time integration, atoms won't move
+For more information see https://docs.lammps.org/err0028 (../verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12.1025
+  ghost atom cutoff = 12.1025
+  binsize = 6.05125, bins = 2 2 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam/alloy, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.318 | 3.318 | 3.318 Mbytes
+   Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
+         0  -56.409833      8.6584976      7.4984789      18.356545     -8067.7213     -16613.818     -7749.4361      160.08976    
+Loop time of 2.052e-06 on 1 procs for 0 steps with 18 atoms
+
+146.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.052e-06  |            |       |100.00
+
+Nlocal:             18 ave          18 max          18 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            273 ave         273 max         273 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:           1122 ave        1122 max        1122 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 1122
+Ave neighs/atom = 62.333333
+Neighbor list builds = 0
+Dangerous builds = 0
+# -- include optimization of the unit cell parameter
+#fix 1 all box/relax x 0.0 y 0.0 couple xy vmax 0.001
+
+# -- enable optimization of atomic positions (and the cell)
+min_style cg
+minimize 1e-10 1e-10 1000 10000
+Per MPI rank memory allocation (min/avg/max) = 4.443 | 4.443 | 4.443 Mbytes
+   Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
+         0  -56.409833      8.6584976      7.4984789      18.356545     -8067.7213     -16613.818     -7749.4361      160.08976    
+        13  -56.846111      8.6584976      7.4984789      18.356545     -6314.3038     -12907.928     -6035.0624      0.078726656  
+Loop time of 0.00156742 on 1 procs for 13 steps with 18 atoms
+
+98.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -56.4098333805522  -56.8461111106211  -56.8461111116278
+  Force two-norm initial, final = 2.3169922 2.5888698e-05
+  Force max component initial, final = 0.66947432 5.6925452e-06
+  Final line search alpha, max atom move = 1 5.6925452e-06
+  Iterations, force evaluations = 13 25
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0014703  | 0.0014703  | 0.0014703  |   0.0 | 93.80
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 3.885e-05  | 3.885e-05  | 3.885e-05  |   0.0 |  2.48
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5.831e-05  |            |       |  3.72
+
+Nlocal:             18 ave          18 max          18 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            273 ave         273 max         273 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:           1122 ave        1122 max        1122 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 1122
+Ave neighs/atom = 62.333333
+Neighbor list builds = 0
+Dangerous builds = 0
+
+# ---- 4. Define and print useful variables -------------
+variable natoms equal "count(all)"
+variable totenergy equal "pe"
+variable length equal "lx"
+
+print "Total energy (eV) = ${totenergy}"
+Total energy (eV) = -56.8461111116278
+print "Number of atoms = ${natoms}"
+Number of atoms = 18
+print "Lattice constant (Angstoms) = ${length}"
+Lattice constant (Angstoms) = 8.65849758507688
+Total wall time: 0:00:00

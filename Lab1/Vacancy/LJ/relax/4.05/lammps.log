@@ -1,0 +1,124 @@
+LAMMPS (22 Jul 2025 - Update 1)
+# ---------- 1. Initialize simulation ---------------------
+units metal
+atom_style atomic
+dimension  3
+boundary   p p p
+read_data /home/bond/Work/Lab1/Vacancy/LJ/relax/4.05/lammps.data
+Reading data file ...
+  orthogonal box = (0 0 0) to (16.2 16.2 16.2)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  255 atoms
+  read_data CPU = 0.001 seconds
+
+# ---------- 2. Specify interatomic potential ---------------------
+
+pair_style lj/cut 4.5
+pair_coeff 1 1 0.392 2.620 4.5
+
+# ---------- 3. Run single point calculation  ---------------------
+thermo_style custom step pe lx ly lz press pxx pyy pzz
+run 0
+WARNING: No fixes with time integration, atoms won't move
+For more information see https://docs.lammps.org/err0028 (../verlet.cpp:60)
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6.5
+  ghost atom cutoff = 6.5
+  binsize = 3.25, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.118 | 3.118 | 3.118 Mbytes
+   Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
+         0  -660.74005      16.2           16.2           16.2           126085.34      126085.34      126085.34      126085.34    
+Loop time of 1.984e-06 on 1 procs for 0 steps with 255 atoms
+
+50.4% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.984e-06  |            |       |100.00
+
+Nlocal:            255 ave         255 max         255 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           1424 ave        1424 max        1424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:           9906 ave        9906 max        9906 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 9906
+Ave neighs/atom = 38.847059
+Neighbor list builds = 0
+Dangerous builds = 0
+# -- include optimization of the unit cell parameter
+fix 1 all box/relax iso 0.0 vmax 0.001
+
+# -- enable optimization of atomic positions (and the cell)
+min_style cg
+minimize 1e-12 1e-12 1000 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Energy due to 1 extra global DOFs will be included in minimizer energies
+ (../min.cpp:222)
+Per MPI rank memory allocation (min/avg/max) = 4.243 | 4.243 | 4.243 Mbytes
+   Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
+         0  -660.74005      16.2           16.2           16.2           126085.34      126085.34      126085.34      126085.34    
+        43  -669.1977       16.489771      16.489771      16.489771      0.15643034     0.15643034     0.15643034     0.15643034   
+Loop time of 0.0125544 on 1 procs for 43 steps with 255 atoms
+
+92.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -660.740050084165  -669.197703206003  -669.197703206266
+  Force two-norm initial, final = 1003.7391 0.0034024377
+  Force max component initial, final = 1003.7384 0.0012902568
+  Final line search alpha, max atom move = 0.44711606 0.00057689451
+  Iterations, force evaluations = 43 69
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0088375  | 0.0088375  | 0.0088375  |   0.0 | 70.39
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00062125 | 0.00062125 | 0.00062125 |   0.0 |  4.95
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.003096   |            |       | 24.66
+
+Nlocal:            255 ave         255 max         255 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           1424 ave        1424 max        1424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:           9906 ave        9906 max        9906 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 9906
+Ave neighs/atom = 38.847059
+Neighbor list builds = 0
+Dangerous builds = 0
+# ---- 4. Define and print useful variables -------------
+variable natoms equal "count(all)"
+variable totenergy equal "pe"
+variable length equal "lx"
+
+print "Total energy (eV) = ${totenergy}"
+Total energy (eV) = -669.197703206266
+print "Number of atoms = ${natoms}"
+Number of atoms = 255
+print "Lattice constant (Angstoms) = ${length}"
+Lattice constant (Angstoms) = 16.4897705575112
+Total wall time: 0:00:00

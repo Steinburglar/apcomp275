@@ -1,0 +1,34 @@
+&CONTROL
+    calculation = 'scf'
+    pseudo_dir = '/home/bond/Software/QE/qe-7.4.1/pseudo'
+    outdir = '/home/bond/Work/Lab3/Problem1/cutoff_65'
+    tstress = .true.
+    tprnfor = .true.
+    disk_io = 'none'
+/ 
+&SYSTEM
+    ecutwfc = 65
+    ntyp = 1
+    nat = 2
+    ibrav = 0
+/ 
+&ELECTRONS
+    diagonalization = 'david'
+    mixing_beta = 0.5
+    conv_thr = 1e-07
+/ 
+&IONS
+/ 
+&CELL
+/ 
+K_POINTS {automatic}
+ 4 4 4  0 0 0
+ATOMIC_SPECIES
+  Ge 72.63 ge_lda_v1.4.uspp.F.UPF
+CELL_PARAMETERS {angstrom}
+ 0.0 2.829 2.829
+ 2.829 0.0 2.829
+ 2.829 2.829 0.0
+ATOMIC_POSITIONS {angstrom}
+  Ge 0.00000 0.00000 0.00000
+  Ge 1.41450 1.41450 1.41450

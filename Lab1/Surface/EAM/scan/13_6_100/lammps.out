@@ -1,0 +1,10 @@
+LAMMPS (22 Jul 2025 - Update 1)
+Reading data file ...
+  orthogonal box = (0 0 0) to (8.6584976 8.6584976 36.489929)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  117 atoms
+  read_data CPU = 0.001 seconds
+Reading eam/alloy potential file /home/bond/Software/LAMMPS/lammps-22Jul2025/potentials/Al_zhou.eam.alloy with DATE: 2007-10-12
+[mpiexec@lucas275instance] Sending Ctrl-C to processes as requested
+[mpiexec@lucas275instance] Press Ctrl-C again to force abort

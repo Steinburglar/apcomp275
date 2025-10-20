@@ -1,0 +1,101 @@
+LAMMPS (22 Jul 2025 - Update 1)
+Reading data file ...
+  orthogonal box = (0 0 0) to (16.2 16.2 16.2)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  255 atoms
+  read_data CPU = 0.002 seconds
+Reading eam/alloy potential file /home/bond/Software/LAMMPS/lammps-22Jul2025/potentials/Al_zhou.eam.alloy with DATE: 2007-10-12
+WARNING: No fixes with time integration, atoms won't move
+For more information see https://docs.lammps.org/err0028 (../verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12.1025
+  ghost atom cutoff = 12.1025
+  binsize = 6.05125, bins = 3 3 3
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam/alloy, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 3.469 | 3.469 | 3.469 Mbytes
+   Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
+         0  -911.44104      16.2           16.2           16.2           22310.512      22310.512      22310.512      22310.512    
+Loop time of 1.581e-06 on 1 procs for 0 steps with 255 atoms
+
+126.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.581e-06  |            |       |100.00
+
+Nlocal:            255 ave         255 max         255 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           3166 ave        3166 max        3166 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:          54356 ave       54356 max       54356 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 54356
+Ave neighs/atom = 213.16078
+Neighbor list builds = 0
+Dangerous builds = 0
+Setting up cg style minimization ...
+  Unit style    : metal
+  Current step  : 0
+WARNING: Energy due to 1 extra global DOFs will be included in minimizer energies
+ (../min.cpp:222)
+Per MPI rank memory allocation (min/avg/max) = 4.594 | 4.594 | 4.594 Mbytes
+   Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
+         0  -911.44104      16.2           16.2           16.2           22310.512      22310.512      22310.512      22310.512    
+        22  -912.18455      16.318897      16.318897      16.318897     -0.72360118    -0.72360118    -0.72360118    -0.72360118   
+Loop time of 0.107168 on 1 procs for 22 steps with 255 atoms
+
+99.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -911.441035033872  -912.184551765504  -912.184551814152
+  Force two-norm initial, final = 177.61147 0.016343398
+  Force max component initial, final = 177.60921 0.0058452997
+  Final line search alpha, max atom move = 0.023905188 0.00013973299
+  Iterations, force evaluations = 22 37
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.10366    | 0.10366    | 0.10366    |   0.0 | 96.73
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00065934 | 0.00065934 | 0.00065934 |   0.0 |  0.62
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.00285    |            |       |  2.66
+
+Nlocal:            255 ave         255 max         255 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           3166 ave        3166 max        3166 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:          54356 ave       54356 max       54356 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 54356
+Ave neighs/atom = 213.16078
+Neighbor list builds = 0
+Dangerous builds = 0
+Total energy (eV) = -912.184551814152
+Number of atoms = 255
+Lattice constant (Angstoms) = 16.3188970458161
+Total wall time: 0:00:00

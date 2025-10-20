@@ -1,5 +1,4 @@
 LAMMPS (22 Jul 2025 - Update 1)
-
 # ---------- 1. Initialize simulation ---------------------
 units metal
 atom_style atomic
@@ -11,7 +10,7 @@ Reading data file ...
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   4 atoms
-  read_data CPU = 0.008 seconds
+  read_data CPU = 0.001 seconds
 
 # ---------- 2. Specify interatomic potential ---------------------
 
@@ -39,9 +38,9 @@ Neighbor list info ...
 Per MPI rank memory allocation (min/avg/max) = 2.959 | 2.959 | 2.959 Mbytes
    Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
          0  -9.9562493      3.98           3.98           3.98           310966.5       310966.5       310966.5       310966.5     
-Loop time of 2.125e-06 on 1 procs for 0 steps with 4 atoms
+Loop time of 1.831e-06 on 1 procs for 0 steps with 4 atoms
 
-94.1% CPU use with 1 MPI tasks x no OpenMP threads
+54.6% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
@@ -51,7 +50,7 @@ Neigh   | 0          | 0          | 0          |   0.0 |  0.00
 Comm    | 0          | 0          | 0          |   0.0 |  0.00
 Output  | 0          | 0          | 0          |   0.0 |  0.00
 Modify  | 0          | 0          | 0          |   0.0 |  0.00
-Other   |            | 2.125e-06  |            |       |100.00
+Other   |            | 1.831e-06  |            |       |100.00
 
 Nlocal:              4 ave           4 max           4 min
 Histogram: 1 0 0 0 0 0 0 0 0 0

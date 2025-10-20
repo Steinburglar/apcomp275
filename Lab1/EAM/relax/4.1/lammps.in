@@ -1,4 +1,3 @@
-
 # ---------- 1. Initialize simulation ---------------------
 units metal
 atom_style atomic
@@ -17,11 +16,11 @@ pair_coeff * * /home/bond/Software/LAMMPS/lammps-22Jul2025/potentials/Al_zhou.ea
 thermo_style custom step pe lx ly lz press pxx pyy pzz
 run 0
 # -- include optimization of the unit cell parameter
-#fix 1 all box/relax iso 0.0 vmax 0.001
+fix 1 all box/relax iso 0.0 vmax 0.001
 
 # -- enable optimization of atomic positions (and the cell)
-#min_style cg
-#minimize 1e-10 1e-10 1000 10000
+min_style cg
+minimize 1e-10 1e-10 1000 10000
 
 # ---- 4. Define and print useful variables -------------
 variable natoms equal "count(all)"

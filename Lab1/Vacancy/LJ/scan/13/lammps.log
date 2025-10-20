@@ -1,0 +1,78 @@
+LAMMPS (22 Jul 2025 - Update 1)
+# ---------- 1. Initialize simulation ---------------------
+units metal
+atom_style atomic
+dimension  3
+boundary   p p p
+read_data /home/bond/Work/Lab1/Vacancy/LJ/scan/13/lammps.data
+Reading data file ...
+  orthogonal box = (0 0 0) to (53.592799 53.592799 53.592799)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  8787 atoms
+  read_data CPU = 0.026 seconds
+
+# ---------- 2. Specify interatomic potential ---------------------
+
+pair_style lj/cut 4.5
+pair_coeff 1 1 0.392 2.620 4.5
+
+# ---------- 3. Run single point calculation  ---------------------
+thermo_style custom step pe lx ly lz press pxx pyy pzz
+run 0
+WARNING: No fixes with time integration, atoms won't move
+For more information see https://docs.lammps.org/err0028 (../verlet.cpp:60)
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6.5
+  ghost atom cutoff = 6.5
+  binsize = 3.25, bins = 17 17 17
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 6.548 | 6.548 | 6.548 Mbytes
+   Step         PotEng           Lx             Ly             Lz           Press           Pxx            Pyy            Pzz      
+         0  -23147.636      53.592799      53.592799      53.592799     -0.00096865867 -0.00094698677 -0.0010120027  -0.00094698658
+Loop time of 1.822e-06 on 1 procs for 0 steps with 8787 atoms
+
+164.7% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.822e-06  |            |       |100.00
+
+Nlocal:           8787 ave        8787 max        8787 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           9173 ave        9173 max        9173 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:         237222 ave      237222 max      237222 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 237222
+Ave neighs/atom = 26.996927
+Neighbor list builds = 0
+Dangerous builds = 0
+
+# ---- 4. Define and print useful variables -------------
+variable natoms equal "count(all)"
+variable totenergy equal "pe"
+variable length equal "lx"
+
+print "Total energy (eV) = ${totenergy}"
+Total energy (eV) = -23147.6364637148
+print "Number of atoms = ${natoms}"
+Number of atoms = 8787
+print "Lattice constant (Angstoms) = ${length}"
+Lattice constant (Angstoms) = 53.5927991791366
+Total wall time: 0:00:00

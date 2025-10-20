@@ -1,0 +1,18 @@
+Header of the LAMMPS data file 
+
+3 atoms 
+1 atom types
+
+0.0 4.08165490486347  xlo xhi
+0.0 4.08165490486347  ylo yhi
+0.0 4.08165490486347  zlo zhi
+
+Masses 
+
+1  26.9815385
+
+Atoms # atomic 
+
+1 1 0.00000 0.00000 0.00000 
+2 1 0.00000 2.04083 2.04083 
+3 1 2.04083 2.04083 0.00000 
