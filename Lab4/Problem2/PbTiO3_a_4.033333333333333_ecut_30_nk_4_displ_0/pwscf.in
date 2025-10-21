@@ -1,0 +1,41 @@
+&CONTROL
+    calculation = 'scf'
+    pseudo_dir = '/home/bond/Software/QE/qe-7.4.1/pseudo'
+    outdir = '/home/bond/Work/Lab4/Problem2/PbTiO3_a_4.033333333333333_ecut_30_nk_4_displ_0'
+    tstress = .true.
+    tprnfor = .true.
+    disk_io = 'none'
+/ 
+&SYSTEM
+    ecutwfc = 30
+    ecutrho = 240
+    ntyp = 3
+    nat = 5
+    ibrav = 0
+/ 
+&ELECTRONS
+    diagonalization = 'david'
+    mixing_beta = 0.7
+    conv_thr = 1e-07
+/ 
+&IONS
+    ion_dynamics = 'bfgs'
+/ 
+&CELL
+/ 
+K_POINTS {automatic}
+ 4 4 4  1 1 1
+ATOMIC_SPECIES
+  O 15.999 O.pz-rrkjus.UPF
+  Pb 207.2 Pb.pz-d-van.UPF
+  Ti 47.867 Ti.pz-sp-van_ak.UPF
+CELL_PARAMETERS {angstrom}
+ 4.033333333333333 0.0 0.0
+ 0.0 4.033333333333333 0.0
+ 0.0 0.0 4.033333333333333
+ATOMIC_POSITIONS {angstrom}
+  Pb 0.00000 0.00000 0.00000 0 0 0 
+  Ti 2.01667 2.01667 2.01667 0 0 0 
+  O 0.00000 2.01667 2.01667
+  O 2.01667 0.00000 2.01667
+  O 2.01667 2.01667 0.00000

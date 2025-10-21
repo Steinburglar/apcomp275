@@ -203,18 +203,25 @@ def lattice_scan(form, alat, anti=False):
 
 if __name__ == "__main__":
     # put here the function that you actually want to run
-    alats = [2.5, 2.6]
+    alats_bcc = [2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6][:6]
+    alats_hcp = [ 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, 3.1, 3.2, 3.3, 3.4][:6]
     bcc_energies = []
     bcc_volumes = []
     hcp_energies = []
     hcp_volumes = []
-    for alat in alats:
+    
+    for alat in alats_bcc:
         e, v = lattice_scan("bcc", alat)
         bcc_energies.append(e)
         bcc_volumes.append(v)
+    for alat in alats_hcp:
         e, v = lattice_scan("hcp", alat)
         hcp_energies.append(e)
         hcp_volumes.append(v) 
+    #normalize hcp by number of atoms: 2
+    for i in range(len(hcp_energies)):
+        hcp_energies[i] /= 2
+        hcp_volumes[i] /= 2
     #create a table with nks (the mesh spacing), energy in eV, energy in Ry, and difference with the last value, which we call E_true
     energies_ry_bcc = [e * 0.0684286 for e in bcc_energies]
     energies_ry_hcp = [e * 0.0684286 for e in hcp_energies]
@@ -223,20 +230,20 @@ if __name__ == "__main__":
     import pandas as pd
 
     bcc_data = {
-        "Volumes": bcc_volumes,
-        "Energy (eV)": bcc_energies,
-        "Energy (Ry)": energies_ry_bcc,
-        "relaxed a (Angstrom)": alats,
+        "Volume per atom": bcc_volumes,
+        "Energy (eV) per atom": bcc_energies,
+        "Energy (Ry) per atom": energies_ry_bcc,
+        "relaxed a (Angstrom)": alats_bcc,
         "Convergence Level (eV) (per atom)": [abs(e - E_true_bcc)for  e in bcc_energies],
         "Convergence Level (Ry)(per atom) ": [abs(e - E_true_bcc * 0.0684286) for e in energies_ry_bcc],
     }
     hcp_data = {
-        "Volumes": hcp_volumes,
-        "Energy (eV)": hcp_energies,
-        "Energy (Ry)": energies_ry_hcp,
-        "a (Angstrom)": alats,
-        "c (Angstrom)": [a *1.737 for a in alats],
-        "Convergence Level (eV) (per atom)": [abs(e - E_true_hcp)/2 for e in hcp_energies], #divide by 2 since 2 atoms per cell
+        "Volume per atom": hcp_volumes,
+        "Energy (eV) per atom": hcp_energies,
+        "Energy (Ry) per atom": energies_ry_hcp,
+        "a (Angstrom)": alats_hcp,
+        "c (Angstrom)": [a *1.737 for a in alats_hcp],
+        "Convergence Level (eV) (per atom)": [abs(e - E_true_hcp) for e in hcp_energies], #divide by 2 since 2 atoms per cell
         "Convergence Level (Ry)(per atom) ": [abs(e - E_true_hcp * 0.0684286) for e in energies_ry_hcp],
     }
     bcc_df = pd.DataFrame(bcc_data)
@@ -245,16 +252,29 @@ if __name__ == "__main__":
     hcp_df.to_csv('k_convergence_hcp_results.csv', index=False)
     plt.plot(bcc_volumes, bcc_energies, marker='o', label='BCC')
     plt.title('BCC K parameter Convergence')
-    plt.xlabel('Volume (Angstrom^3)')
-    plt.ylabel('Total Energy (eV)')
+    plt.xlabel('Volume per atom (Angstrom^3)')
+    plt.ylabel('Total Energy (eV) per atom')
     plt.savefig('bcc_convergence.png')
     plt.show()
 
     plt.plot(hcp_volumes, hcp_energies, marker='o', color='orange', label='HCP')
     plt.title('HCP K parameter Convergence')
-    plt.xlabel('Volume (Angstrom^3)')
-    plt.ylabel('Total Energy (eV)')
+    plt.xlabel('Volume per atom (Angstrom^3)')
+    plt.ylabel('Total Energy (eV) per atom')
     plt.savefig('hcp_convergence.png')
     plt.show()
+
+
+    # plot both overlapping:
+    plt.plot(bcc_volumes, bcc_energies, marker='o', label='BCC')
+    plt.plot(hcp_volumes, hcp_energies, marker='o', color='orange', label='HCP')
+    plt.title('K parameter Convergence')
+    plt.xlabel('Volume per atom (Angstrom^3)')
+    plt.ylabel('Total Energy (eV) per atom')
+    plt.legend()
+    plt.grid()
+    plt.savefig('bcc_hcp_convergence.png')
+    plt.show()
+
 
     

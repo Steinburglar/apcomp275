@@ -217,6 +217,9 @@ if __name__ == "__main__":
         hcp_energies.append(e)
         hcp_alats.append(lat_dic["a"])
         hcp_clats.append(lat_dic["c"])
+    #normalize hcp by number of atoms: 2
+    for i in range(len(hcp_energies)):
+        hcp_energies[i] /= 2
     #create a table with nks (the mesh spacing), energy in eV, energy in Ry, and difference with the last value, which we call E_true
     energies_ry_bcc = [e * 0.0684286 for e in bcc_energies]
     energies_ry_hcp = [e * 0.0684286 for e in hcp_energies]
@@ -226,19 +229,19 @@ if __name__ == "__main__":
 
     bcc_data = {
         "K-mesh parameter": nks,
-        "Energy (eV)": bcc_energies,
-        "Energy (Ry)": energies_ry_bcc,
+        "Energy (eV) per atom": bcc_energies,
+        "Energy (Ry) per atom": energies_ry_bcc,
         "relaxed a (Angstrom)": bcc_alats,
         "Convergence Level (eV) (per atom)": [abs(e - E_true_bcc)for  e in bcc_energies],
         "Convergence Level (Ry)(per atom) ": [abs(e - E_true_bcc * 0.0684286) for e in energies_ry_bcc],
     }
     hcp_data = {
         "K-mesh parameter": nks,
-        "Energy (eV)": hcp_energies,
-        "Energy (Ry)": energies_ry_hcp,
+        "Energy (eV) per atom": hcp_energies,
+        "Energy (Ry) per atom": energies_ry_hcp,
         "relaxed a (Angstrom)": hcp_alats,
         "relaxed c (Angstrom)": hcp_clats,
-        "Convergence Level (eV) (per atom)": [abs(e - E_true_hcp)/2 for e in hcp_energies], #divide by 2 since 2 atoms per cell
+        "Convergence Level (eV) (per atom)": [abs(e - E_true_hcp) for e in hcp_energies],
         "Convergence Level (Ry)(per atom) ": [abs(e - E_true_hcp * 0.0684286) for e in energies_ry_hcp],
     }
     bcc_df = pd.DataFrame(bcc_data)
@@ -248,15 +251,25 @@ if __name__ == "__main__":
     plt.plot(nks, bcc_energies, marker='o', label='BCC')
     plt.title('BCC K parameter Convergence')
     plt.xlabel('k-point Mesh Parameter')
-    plt.ylabel('Total Energy (eV)')
+    plt.ylabel('Total Energy (eV) per atom')
     plt.savefig('bcc_convergence.png')
     plt.show()
 
     plt.plot(nks, hcp_energies, marker='o', color='orange', label='HCP')
     plt.title('HCP K parameter Convergence')
     plt.xlabel('k-point Mesh Parameter')
-    plt.ylabel('Total Energy (eV)')
+    plt.ylabel('Total Energy (eV) per atom')
     plt.savefig('hcp_convergence.png')
     plt.show()
 
+
+    #plot both overlapping:
+    plt.plot(nks, bcc_energies, marker='o', label='BCC')
+    plt.plot(nks, hcp_energies, marker='o', color='orange', label='HCP')
+    plt.title('K parameter Convergence')
+    plt.xlabel('k-point Mesh Parameter')
+    plt.ylabel('Total Energy (eV) per atom')
+    plt.legend()
+    plt.savefig('bcc_hcp_convergence.png')
+    plt.show()
     

@@ -1,0 +1,41 @@
+&CONTROL
+    calculation = 'scf'
+    pseudo_dir = '/home/bond/Software/QE/qe-7.4.1/pseudo'
+    outdir = '/home/bond/Work/Lab4/Problem3/CuAu_nk_10'
+    tstress = .true.
+    tprnfor = .true.
+    disk_io = 'none'
+/ 
+&SYSTEM
+    ecutwfc = 40
+    ecutrho = 320
+    occupations = 'smearing'
+    smearing = 'mp'
+    degauss = 0.02
+    ntyp = 2
+    nat = 2
+    ibrav = 0
+/ 
+&ELECTRONS
+    diagonalization = 'david'
+    mixing_beta = 0.7
+    conv_thr = 1e-07
+/ 
+&IONS
+    ion_dynamics = 'bfgs'
+/ 
+&CELL
+    cell_dynamics = 'bfgs'
+/ 
+K_POINTS {automatic}
+ 10 10 10  1 1 1
+ATOMIC_SPECIES
+  Au 196.966569 Au.pz-d-rrkjus.UPF
+  Cu 63.546 Cu.pz-d-rrkjus.UPF
+CELL_PARAMETERS {angstrom}
+ 2.77067018 0.0 0.0
+ 0.0 2.77067018 0.0
+ 0.0 0.0 3.626957491
+ATOMIC_POSITIONS {angstrom}
+  Cu 0.00000 0.00000 0.00000 0 0 0 
+  Au 1.38534 1.38534 1.81348 0 0 0 

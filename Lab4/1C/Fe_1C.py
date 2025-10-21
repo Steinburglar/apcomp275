@@ -49,11 +49,11 @@ def make_struc(alat, form, clat = None, anti = False):
     :param anti: Boolean flag to include a fake Co in the structure, to allow for anti-ferromagnetic ordering
     :return: structure object converted from ase
     """
-    fecell = bulk("Fe", form, a=alat, c=clat)
+    fecell = bulk("Fe", form, a=alat, c=clat, cubic=True)
     # check how your cell looks like
     # write('s.cif', gecell)
     print(fecell, fecell.get_atomic_numbers())
-    if anti:
+    if anti == "anti":
         fecell.set_atomic_numbers([26, 27])
     structure = Struc(ase2struc(fecell))
     print(structure.species)
@@ -94,43 +94,96 @@ def compute_energy(form, alat, nk, ecut, clat=None, anti=False, recalculate=Fals
         else:
             print(f"Existing calculation found but incomplete in {runpath.path}, rerunning...")
     #starting state is initialized as ferromagnetic unless anti is specified, or nonmag is specified
-    input_params = PWscf_inparam(
-        {
-            "CONTROL": {
-                "calculation": "vc-relax",
-                "pseudo_dir": os.environ["QE_POTENTIALS"],
-                "outdir": runpath.path,
-                "tstress": True,
-                "tprnfor": True,
-                "disk_io": "none",
-            },
-            "SYSTEM": {
-                "ecutwfc": ecut,
-                "ecutrho": ecut * 10,
-                "nspin": 2,
-                "starting_magnetization(1)": 0.7,
-                "occupations": "smearing",
-                "smearing": "mp",
-                "degauss": 0.02,
-            },
-            "ELECTRONS": {
-                "diagonalization": "david",
-                "mixing_beta": 0.5,
-                "conv_thr": 1e-7,
-            },
-            "IONS": {},
-            "CELL": {},
-        }
-    )
+    if anti == "ferro":
+        input_params = PWscf_inparam(
+            {
+                "CONTROL": {
+                    "calculation": "vc-relax",
+                    "pseudo_dir": os.environ["QE_POTENTIALS"],
+                    "outdir": runpath.path,
+                    "tstress": True,
+                    "tprnfor": True,
+                    "disk_io": "none",
+                },
+                "SYSTEM": {
+                    "ecutwfc": ecut,
+                    "ecutrho": ecut * 10,
+                    "nspin": 2,
+                    "starting_magnetization(1)": 0.7,
+                    "occupations": "smearing",
+                    "smearing": "mp",
+                    "degauss": 0.02,
+                },
+                "ELECTRONS": {
+                    "diagonalization": "david",
+                    "mixing_beta": 0.5,
+                    "conv_thr": 1e-7,
+                },
+                "IONS": {},
+                "CELL": {},
+            }
+        )
+    elif anti == "anti":
+        input_params = PWscf_inparam(
+            {
+                "CONTROL": {
+                    "calculation": "vc-relax",
+                    "pseudo_dir": os.environ["QE_POTENTIALS"],
+                    "outdir": runpath.path,
+                    "tstress": True,
+                    "tprnfor": True,
+                    "disk_io": "none",
+                },
+                "SYSTEM": {
+                    "ecutwfc": ecut,
+                    "ecutrho": ecut * 10,
+                    "nspin": 2,
+                    "starting_magnetization(1)": 1,
+                    "starting_magnetization(2)": -1,
+                    "occupations": "smearing",
+                    "smearing": "mp",
+                    "degauss": 0.02,
+                },
+                "ELECTRONS": {
+                    "diagonalization": "david",
+                    "mixing_beta": 0.5,
+                    "conv_thr": 1e-7,
+                },
+                "IONS": {},
+                "CELL": {},
+            }
+        )
 
-    ##untested, potential failure point
-    if anti == "anti": 
-        input_params["SYSTEM"]["starting_magnetization(1)"] = 1
-        input_params["SYSTEM"]["starting_magnetization(2)"] = -1
-    if anti == "nonmag":
-        input_params["SYSTEM"]["nspin"] = 1
-        input_params["SYSTEM"]["starting_magnetization(1)"] = 0
-        input_params["SYSTEM"]["starting_magnetization(2)"] = 0
+    elif anti == "nonmag":
+        input_params = PWscf_inparam(
+            {
+                "CONTROL": {
+                    "calculation": "vc-relax",
+                    "pseudo_dir": os.environ["QE_POTENTIALS"],
+                    "outdir": runpath.path,
+                    "tstress": True,
+                    "tprnfor": True,
+                    "disk_io": "none",
+                },
+                "SYSTEM": {
+                    "ecutwfc": ecut,
+                    "ecutrho": ecut * 10,
+                    "nspin": 1,
+                    "starting_magnetization(1)": 0,
+                    "occupations": "smearing",
+                    "smearing": "mp",
+                    "degauss": 0.02,
+                },
+                "ELECTRONS": {
+                    "diagonalization": "david",
+                    "mixing_beta": 0.5,
+                    "conv_thr": 1e-7,
+                },
+                "IONS": {},
+                "CELL": {},
+            }
+        )
+
     output_file = run_qe_pwscf(
         runpath=runpath,
         struc=struc,
@@ -211,8 +264,9 @@ if __name__ == "__main__":
     energies = {}
     for anti in antis:
         energy = lattice_scan("bcc", anti=anti)
-        energies[anti] = energy
+        energies[anti] = energy/2  #per atom
     #create a dataframe for the three cases
     import pandas as pd
-    df = pd.DataFrame.from_dict(energies, orient='index', columns=['Energy (eV)'])
+    df = pd.DataFrame.from_dict(energies, orient='index', columns=['Energy (eV) per atom'])
     print(df)
+    df.to_csv('Fe_bcc_magnetic_states_energies.csv')

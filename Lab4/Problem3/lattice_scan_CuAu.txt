@@ -1,0 +1,9 @@
+Relaxed lattice parameters for CuAu:
+Cell parameters (Angstrom):
+[2.77067018, 0.0, 0.0]
+[0.0, 2.77067018, 0.0]
+[0.0, 0.0, 3.626957491]
+a = 2.77067018
+c = 3.626957491
+c/a ratio: 1.3090542198710926
+Total energy (eV): -2105.215036683201

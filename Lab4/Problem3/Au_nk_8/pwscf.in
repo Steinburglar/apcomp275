@@ -1,0 +1,39 @@
+&CONTROL
+    calculation = 'vc-relax'
+    pseudo_dir = '/home/bond/Software/QE/qe-7.4.1/pseudo'
+    outdir = '/home/bond/Work/Lab4/Problem3/Au_nk_8'
+    tstress = .true.
+    tprnfor = .true.
+    disk_io = 'none'
+/ 
+&SYSTEM
+    ecutwfc = 40
+    ecutrho = 320
+    occupations = 'smearing'
+    smearing = 'mp'
+    degauss = 0.02
+    ntyp = 1
+    nat = 1
+    ibrav = 0
+/ 
+&ELECTRONS
+    diagonalization = 'david'
+    mixing_beta = 0.7
+    conv_thr = 1e-07
+/ 
+&IONS
+    ion_dynamics = 'bfgs'
+/ 
+&CELL
+    cell_dynamics = 'bfgs'
+/ 
+K_POINTS {automatic}
+ 8 8 8  1 1 1
+ATOMIC_SPECIES
+  Au 196.966569 Au.pz-d-rrkjus.UPF
+CELL_PARAMETERS {angstrom}
+ 0.0 2.0 2.0
+ 2.0 0.0 2.0
+ 2.0 2.0 0.0
+ATOMIC_POSITIONS {angstrom}
+  Au 0.00000 0.00000 0.00000 0 0 0 

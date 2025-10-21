@@ -1,4 +1,4 @@
-K-mesh parameter,Energy (eV),Energy (Ry),relaxed a (Angstrom),Convergence Level (eV) (per atom),Convergence Level (Ry)(per atom) 
+K-mesh parameter,Energy (eV) per atom,Energy (Ry) per atom,relaxed a (Angstrom),Convergence Level (eV) (per atom),Convergence Level (Ry)(per atom) 
 2,-758.1086330920348,-51.87631241040162,2.993314894,1.1180817085906938,0.07650876600446566
 4,-759.2039983189636,-51.95126671936904,2.815836486,0.02271648166185969,0.0015544570370451538
 6,-759.2629182026093,-51.95529852451907,2.832314782,0.036203401983812,0.00247734811298983
